@@ -3,6 +3,7 @@ import pandas as pd
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
 from datasets import Dataset
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import torch
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -60,6 +61,19 @@ test_dataset = test_dataset.map(cast_labels)
 for column in ['input_ids', 'attention_mask', 'label']:
     train_dataset = train_dataset.map(lambda x: {column: x[column].to(device)})
 
+# Добавляем метрики, для оценки работы модели
+def compute_metrics(pred):
+    labels = pred.label_ids
+    preds = pred.predictions.argmax(-1)
+    precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='weighted')
+    acc = accuracy_score(labels, preds)
+    return {
+        'accuracy': acc,
+        'precision': precision,
+        'recall': recall,
+        'f1': f1,
+    }
+
 # 2. Настройка тренировки модели
 training_args = TrainingArguments(
     output_dir='./resultsModer',
@@ -76,6 +90,7 @@ trainer = Trainer(
     args=training_args,
     train_dataset=train_dataset,
     eval_dataset=test_dataset,
+    compute_metrics=compute_metrics
 )
 
 # 3. Обучение модели

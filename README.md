@@ -34,7 +34,11 @@ docker build -t analyzer-and-classifier-of-comments .
 
 ### 2. Run the Docker container:
 ```bash
-docker run -d -p 8000:8000 analyzer-and-classifier-of-comments
+docker run -d \
+    --name analyzer-container \
+    -p 8000:8000 \
+    -v $(pwd)/output:/app/datasets \
+    analyzer-and-classifier-of-comments
 ```
 
 ## Authors

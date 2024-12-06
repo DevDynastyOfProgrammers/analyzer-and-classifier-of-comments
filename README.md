@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 ### 4. Run main.py:
 ```bash
-python run main.py
+python main.py
 ```
 
 ## Authors

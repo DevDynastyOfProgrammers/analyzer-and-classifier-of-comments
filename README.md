@@ -1,7 +1,7 @@
-# analyzer-and-classifier-of-comments
+# Analyzer and classifier of comments
 The Hackaton project, which helps businesses automate the capture of problems from comments
 
-## Setup Instructions
+## Setup Instructions using local environment
 
 ### 1. Clone the repository and navigate to the project directory:
 ```bash
@@ -23,6 +23,18 @@ pip install -r requirements.txt
 ### 4. Run main.py:
 ```bash
 python main.py
+```
+
+### Building and Running the Docker Image
+
+### 1. Build the Docker image:
+```bash
+docker build -t analyzer-and-classifier-of-comments .
+```
+
+### 2. Run the Docker container:
+```bash
+docker run -d -p 8000:8000 analyzer-and-classifier-of-comments
 ```
 
 ## Authors

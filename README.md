@@ -20,6 +20,11 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### 4. Run main.py:
+```bash
+python run main.py
+```
+
 ## Authors
 
 - [RockurDev](https://github.com/RockurDev)

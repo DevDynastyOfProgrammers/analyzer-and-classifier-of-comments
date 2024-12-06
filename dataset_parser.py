@@ -1,6 +1,8 @@
-import pandas as pd
 import os
-from Classifier import Classifier
+
+import pandas as pd
+
+from classifier import Classifier
 
 
 class DatasetParser:

@@ -1,14 +1,16 @@
-import pandas as pd
 import os
-from Classifier import Classifier
-from DatasetParser import DatasetParser
+
+import pandas as pd
+
+from classifier import Classifier
+from dataset_parser import DatasetParser
 
 
 def learn_spam():
     classifier = Classifier(label_map={0: "Не спам", 1: "Спам"})
 
     # 1. Загрузка и подготовка данных
-    train_dataset, test_dataset = classifier.load_data("ReviewSpam.csv")
+    train_dataset, test_dataset = classifier.load_data("data/ReviewSpam.csv")
 
     # 2. Обучение модели
     classifier.train(train_dataset, test_dataset)
@@ -21,7 +23,7 @@ def learn_spam():
     classifier.save_model("./models/saved_model_spam")
 
 
-def remove_spam(data_name="ReviewSpam.csv"):
+def remove_spam(data_name="data/ReviewSpam.csv"):
     # 1. Получение модели
     model = Classifier(label_map={0: "Не спам", 1: "Спам"})
     model.load_model("./models/saved_model_spam")
@@ -36,7 +38,7 @@ def remove_spam(data_name="ReviewSpam.csv"):
 def learn_moderation():
     classifier = Classifier(label_map={0: "Готов к публикации", 1: "Требует модерации"})
 
-    train_dataset, test_dataset = classifier.load_data("ReviewModer.csv")
+    train_dataset, test_dataset = classifier.load_data("data/ReviewModer.csv")
 
     classifier.train(train_dataset, test_dataset)
 
@@ -46,7 +48,7 @@ def learn_moderation():
     classifier.save_model("./models/saved_model_moderation")
 
 
-def check_moderation(data_name="ReviewModer.csv"):
+def check_moderation(data_name="data/ReviewModer.csv"):
     model = Classifier(label_map={0: "Готов к публикации", 1: "Требует модерации"})
     model.load_model("./models/saved_model_moderation")
 
@@ -65,7 +67,7 @@ def check_moderation(data_name="ReviewModer.csv"):
 def learn_tonality():
     classifier = Classifier(label_map={0: "Негативный", 1: "Позитивный"})
 
-    train_dataset, test_dataset = classifier.load_data("ReviewTonality.csv")
+    train_dataset, test_dataset = classifier.load_data("data/ReviewTonality.csv")
 
     classifier.train(train_dataset, test_dataset)
 
@@ -75,16 +77,18 @@ def learn_tonality():
     classifier.save_model("./models/saved_model_tonality")
 
 
-def check_tonality(data_name="ReviewTonality.csv"):
+def check_tonality(data_name="data/ReviewTonality.csv"):
     model = Classifier(label_map={0: "Негативный", 1: "Позитивный"})
     model.load_model("./models/saved_model_tonality")
 
     parser = DatasetParser()
-    parser.parse_for_model_result(data_name, model, "datasets/tonality_output.csv", column_name='tonality')
+    parser.parse_for_model_result(
+        data_name, model, "datasets/tonality_output.csv", column_name="tonality"
+    )
 
 
 def learn_problem():
-    df = pd.read_csv("ReviewProblem.csv")
+    df = pd.read_csv("data/ReviewProblem.csv")
     problem_types = df["label"].unique()
     num_labels = len(problem_types)
 
@@ -93,7 +97,7 @@ def learn_problem():
 
     classifier = Classifier(label_map=id2label)
 
-    train_dataset, test_dataset = classifier.load_data("ReviewProblem.csv")
+    train_dataset, test_dataset = classifier.load_data("data/ReviewProblem.csv")
 
     classifier.train(train_dataset, test_dataset, num_epochs=10)
 
@@ -102,8 +106,9 @@ def learn_problem():
     print("Результаты оценки:", eval_results)
     classifier.save_model("./models/saved_model_problem")
 
-def check_problem(data_name="ReviewProblem.csv"):
-    df = pd.read_csv("ReviewProblem.csv")
+
+def check_problem(data_name="data/ReviewProblem.csv"):
+    df = pd.read_csv("data/ReviewProblem.csv")
     problem_types = df["label"].unique()
     num_labels = len(problem_types)
 
@@ -114,7 +119,9 @@ def check_problem(data_name="ReviewProblem.csv"):
     model.load_model("./models/saved_model_problem")
 
     parser = DatasetParser()
-    parser.parse_for_model_add_column(data_name, model, "datasets/problem_output.csv", column_name='problems')
+    parser.parse_for_model_add_column(
+        data_name, model, "datasets/problem_output.csv", column_name="problems"
+    )
 
 
 def all_model_learn():

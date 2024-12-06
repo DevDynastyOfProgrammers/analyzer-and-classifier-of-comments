@@ -172,10 +172,12 @@ if __name__ == "__main__":
 
     if "datasets" in folders:
         if not os.path.isfile("./datasets/review.csv"):
-            dataset_review("Отзывы (спам, модерация, проблемы, корректные) (1).xlsx")
+            dataset_review(
+                "data/Отзывы (спам, модерация, проблемы, корректные) (1).xlsx"
+            )
     else:
         os.mkdir("./datasets")
-        dataset_review("Отзывы (спам, модерация, проблемы, корректные) (1).xlsx")
+        dataset_review("data/Отзывы (спам, модерация, проблемы, корректные) (1).xlsx")
     if "models" in folders:
         if not os.path.isdir("./models/saved_model_spam"):
             print("Learn spam model...")

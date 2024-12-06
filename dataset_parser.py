@@ -25,8 +25,16 @@ class DatasetParser:
 
         print(f"Новый файл сохранен в: {output_file}")
         return True
+    
+    def dataset_concat(self, input_file1, input_file2, output_file="output.csv"):
+        df1 = pd.read_csv(input_file1)
+        df2 = pd.read_csv(input_file2)
+        new_df = pd.concat([df1, df2], ignore_index=True)
+        new_df.to_csv(output_file, index=False, encoding="utf-8-sig")
 
-    def parse_for_model_slice(self, input_file, model, check, output_file="output.csv"):
+        print(f"Новый файл сохранен в: {output_file}")
+
+    def parse_for_model_slice(self, input_file, model, check, column_name='result', output_file="output.csv"):
         df = pd.read_csv(input_file)
         new_data = []
 
@@ -34,7 +42,7 @@ class DatasetParser:
             new_value = row["text"]
             result = model.predict(new_value)
             if result == check:
-                new_row = {"text": row["text"]}
+                new_row = {"text": row["text"], column_name: result}
                 new_data.append(new_row)
 
         new_df = pd.DataFrame(new_data)
@@ -55,7 +63,7 @@ class DatasetParser:
             new_data.append(new_row)
 
         new_df = pd.DataFrame(new_data)
-        new_df.to_csv(output_file, index=False, encoding="utf-8-sig")
+        new_df.to_csv(output_file, index=False, encoding="utf-8-sig", sep=';')
 
         print(f"Новый файл сохранен в: {output_file}")
 
